@@ -25,14 +25,14 @@ export default function Footer() {
     },
   ];
   return (
-    <footer className="min-h-[70dvh] w-full bg-[#101010] text-[#ffffff] mt-32 px-6 md:px-12 lg:px-20 py-12 flex flex-col justify-between">
+    <footer className="min-h-[70dvh] w-full bg-primary text-[#ffffff] mt-32 px-6 md:px-12 lg:px-20 py-12 flex flex-col justify-between">
       {/* Top */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
         {/* Left */}
         <div className="flex flex-col justify-between gap-16">
           {/* Brand */}
           <div>
-            <h2 className=" w-full text-sm py-3 lg:text-7xl bg-gradient-to-r mt-2 from-[#fe6101] to-[#ffffff] via-[#0148e4] bg-clip-text text-transparent font-semibold text-start col-end-4">
+            <h2 className=" w-fit text-5xl py-3 lg:text-7xl text-gradient2 font-semibold text-start col-end-4">
               {store.name}{" "}
             </h2>
 

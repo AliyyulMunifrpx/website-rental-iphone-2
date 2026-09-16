@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { store } from "../../data/store.js";
 import { FaInstagram, FaTiktok } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 export default function ContactForm() {
   // State untuk menampung isi form
@@ -36,6 +37,7 @@ export default function ContactForm() {
     // Kosongkan form setelah pesan terkirim
     setFormData({ name: "", phone: "", subject: "", message: "" });
   };
+
   // Fungsi untuk memformat nomor WA Indonesia
   const formatWhatsAppNumber = (number) => {
     if (!number) return "";
@@ -51,37 +53,52 @@ export default function ContactForm() {
     // Jika formatnya bukan 62, kembalikan nilai aslinya
     return str;
   };
+
   return (
-    <main className="w-full min-h-[100dvh] text-[#101010] pt-24 px-4 lg:px-48">
+    <main className="w-full min-h-[100dvh] text-primary pt-24 px-4 lg:px-48 overflow-hidden">
       <div className="max-w-6xl mx-auto">
         {/* Header Section */}
-        <div className="max-w-2xl mb-16">
-          <h1 className=" w-full text-2xl lg:text-5xl  text-[#101010] font-semibold text-center lg:text-start col-end-4">
+        <motion.div
+          initial={{ y: 30 }}
+          whileInView={{ y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="max-w-full mb-16"
+        >
+          <h1 className=" w-full text-2xl lg:text-4xl  text-gradient2 font-semibold text-center  col-end-4">
             Ada Pertanyaan? <br />
           </h1>
-          <p className="mt-4 text-[#101010]/70 text-center lg:text-start  text-md">
+          <p className="mt-4 text-white/70 text-center   text-md">
             Butuh konsultasi sewa iPhone, tanya ketersediaan stok, atau mau
             tanya seputar jaminan? Hubungi kami langsung.
           </p>
-        </div>
+        </motion.div>
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
           {/* Information Column (5 cols) */}
-          <div className="lg:col-span-5 flex flex-col gap-8">
-            <div className="p-8 rounded-3xl bg-[#101010] text-white flex flex-col justify-between relative overflow-hidden">
+          <motion.div
+            initial={{ y: 40 }}
+            whileInView={{ y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+            className="lg:col-span-5 flex flex-col gap-8"
+          >
+            <div className="p-8 rounded-3xl bg-gradient2 text-white flex flex-col justify-between relative overflow-hidden">
               <div>
-                <h2 className="text-2xl font-bold mb-4">Informasi Kontak</h2>
-                <p className="text-zinc-400 text-sm">
+                <h2 className="text-2xl font-bold text-primary mb-4">
+                  Informasi Kontak
+                </h2>
+                <p className="text-primary text-sm">
                   Tim kami siap membalas pesan kamu pada jam operasional.
                 </p>
 
                 <div className="mt-8 flex flex-col gap-8">
                   {/* WhatsApp */}
                   <div className="flex items-start gap-4">
-                    <div className="p-4 bg-white/10 rounded-2xl shrink-0">
+                    <div className="p-4 bg-primary rounded-2xl shrink-0">
                       <svg
-                        className="w-6 h-6 text-orange-500"
+                        className="w-6 h-6 text-white"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -95,14 +112,14 @@ export default function ContactForm() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-xs text-zinc-400 font-medium uppercase tracking-wider">
+                      <p className="text-xs text-primary font-medium uppercase tracking-wider">
                         WhatsApp Fast Response
                       </p>
                       <a
                         href={`https://wa.me/${store.whatsapp}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-base font-medium hover:text-orange-400 transition-colors"
+                        className="text-primary font-medium hover:text-primary/50 transition-colors"
                       >
                         {formatWhatsAppNumber(store.whatsapp)}
                       </a>
@@ -111,9 +128,9 @@ export default function ContactForm() {
 
                   {/* Location */}
                   <div className="flex items-start gap-4">
-                    <div className="p-4 bg-white/10 rounded-2xl shrink-0">
+                    <div className="p-4 bg-primary rounded-2xl shrink-0">
                       <svg
-                        className="w-6 h-6 text-orange-500"
+                        className="w-6 h-6 text-white"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -133,12 +150,12 @@ export default function ContactForm() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-xs text-zinc-400 font-medium uppercase tracking-wider">
+                      <p className="text-xs text-primary font-medium uppercase tracking-wider">
                         Lokasi Store
                       </p>
                       <a
                         href={store.mapsUrl}
-                        className="text-base font-medium hover:text-orange-400 transition-colors"
+                        className="text-primary font-medium hover:text-primary/50 transition-colors"
                       >
                         {store.city}
                       </a>
@@ -148,7 +165,7 @@ export default function ContactForm() {
               </div>
 
               {/* Footer Note inside card */}
-              <div className="pt-8 mt-8 border-t flex gap-4 items-center justify-center border-white/10">
+              <div className="pt-8 mt-8 border-t flex gap-4 items-center justify-center border-primary">
                 <div className="flex items-center gap-3">
                   {/* Instagram */}
                   <a
@@ -156,9 +173,9 @@ export default function ContactForm() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Instagram"
-                    className="p-3 bg-white/10 hover:bg-white/20 rounded-xl text-orange-500 hover:text-orange-400 transition-colors flex items-center justify-center"
+                    className="p-3 bg-primary hover:bg-primary/50 rounded-xl text-white transition-colors flex items-center justify-center"
                   >
-                    <FaInstagram></FaInstagram>
+                    <FaInstagram />
                   </a>
 
                   {/* TikTok */}
@@ -167,24 +184,28 @@ export default function ContactForm() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="TikTok"
-                    className="p-3 bg-white/10 hover:bg-white/20 rounded-xl text-orange-500 hover:text-orange-400 transition-colors flex items-center justify-center"
+                    className="p-3 bg-primary hover:bg-primary/50 rounded-xl text-white transition-colors flex items-center justify-center"
                   >
-                    <FaTiktok></FaTiktok>
+                    <FaTiktok />
                   </a>
                 </div>
-                <p className="text-xs text-zinc-400">
+                <p className="text-xs text-primary">
                   {store.name} {store.city} — Solusi Sewa iPhone Mudah &
                   Terpercaya.
                 </p>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Form Column (7 cols) */}
-          <div className="lg:col-span-7 p-4">
-            <h2 className="text-2xl font-bold text-[#101010] mb-4">
-              Kirim Pesan
-            </h2>
+          <motion.div
+            initial={{ y: 40 }}
+            whileInView={{ y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
+            className="lg:col-span-7 p-4"
+          >
+            <h2 className="text-2xl font-bold text-white mb-4">Kirim Pesan</h2>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -192,7 +213,7 @@ export default function ContactForm() {
                 <div className="flex flex-col gap-4">
                   <label
                     htmlFor="name"
-                    className="text-sm font-semibold text-[#101010]"
+                    className="text-sm font-semibold text-white"
                   >
                     Nama Lengkap
                   </label>
@@ -203,7 +224,7 @@ export default function ContactForm() {
                     onChange={handleChange}
                     required
                     placeholder="John Doe"
-                    className="w-full px-4 py-4 rounded-2xl border border-[#101010]/15 bg-white text-[#101010] focus:outline-none focus:ring-2 focus:ring-orange-600/50 focus:border-orange-600 transition-all text-sm"
+                    className="w-full px-4 py-4 rounded-2xl border border-[#101010]/15 bg-white text-primary focus:outline-none focus:ring-2 focus:ring-orange-600/50 focus:border-orange-600 transition-all text-sm"
                   />
                 </div>
 
@@ -211,7 +232,7 @@ export default function ContactForm() {
                 <div className="flex flex-col gap-4">
                   <label
                     htmlFor="phone"
-                    className="text-sm font-semibold text-[#101010]"
+                    className="text-sm font-semibold text-white"
                   >
                     Nomor WhatsApp
                   </label>
@@ -222,7 +243,7 @@ export default function ContactForm() {
                     onChange={handleChange}
                     required
                     placeholder="08123456789"
-                    className="w-full px-4 py-4 rounded-2xl border border-[#101010]/15 bg-white text-[#101010] focus:outline-none focus:ring-2 focus:ring-orange-600/50 focus:border-orange-600 transition-all text-sm"
+                    className="w-full px-4 py-4 rounded-2xl border border-[#101010]/15 bg-white text-primary focus:outline-none focus:ring-2 focus:ring-orange-600/50 focus:border-orange-600 transition-all text-sm"
                   />
                 </div>
               </div>
@@ -231,7 +252,7 @@ export default function ContactForm() {
               <div className="flex flex-col gap-4">
                 <label
                   htmlFor="subject"
-                  className="text-sm font-semibold text-[#101010]"
+                  className="text-sm font-semibold text-white"
                 >
                   Unit / Keperluan
                 </label>
@@ -240,7 +261,7 @@ export default function ContactForm() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-4 rounded-2xl border border-[#101010]/15 bg-white text-[#101010] focus:outline-none focus:ring-2 focus:ring-orange-600/50 focus:border-orange-600 transition-all text-sm"
+                  className="w-full px-4 py-4 rounded-2xl border border-[#101010]/15 bg-white text-primary focus:outline-none focus:ring-2 focus:ring-orange-600/50 focus:border-orange-600 transition-all text-sm"
                 >
                   <option value="">Pilih Keperluan...</option>
                   <option value="sewa-iphone">Tanya Stok & Sewa iPhone</option>
@@ -254,7 +275,7 @@ export default function ContactForm() {
               <div className="flex flex-col gap-4">
                 <label
                   htmlFor="message"
-                  className="text-sm font-semibold text-[#101010]"
+                  className="text-sm font-semibold text-white"
                 >
                   Pesan Anda
                 </label>
@@ -265,14 +286,14 @@ export default function ContactForm() {
                   required
                   rows={4}
                   placeholder="Halo, saya ingin bertanya tentang..."
-                  className="w-full px-4 py-4 rounded-2xl border border-[#101010]/15 bg-white text-[#101010] focus:outline-none focus:ring-2 focus:ring-orange-600/50 focus:border-orange-600 transition-all text-sm resize-none"
+                  className="w-full px-4 py-4 rounded-2xl border border-[#101010]/15 bg-white text-primary focus:outline-none focus:ring-2 focus:ring-orange-600/50 focus:border-orange-600 transition-all text-sm resize-none"
                 />
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
-                className="mt-4 w-full py-4 px-8 rounded-full bg-[#0148e4] hover:bg-[#0148e4]/90 text-white font-medium transition-all shadow-md shadow-[#0148e4]/20 active:scale-[0.99] flex items-center justify-center gap-4"
+                className="mt-4 w-full py-4 px-8 rounded-full bg-gradient2 hover:bg-gradient2/90 text-black font-medium transition-all shadow-md active:scale-[0.99] flex items-center justify-center gap-4"
               >
                 <span>Kirim Pesan</span>
                 <svg
@@ -290,7 +311,7 @@ export default function ContactForm() {
                 </svg>
               </button>
             </form>
-          </div>
+          </motion.div>
         </div>
       </div>
     </main>

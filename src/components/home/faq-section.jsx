@@ -3,6 +3,7 @@
 import { ChevronDown } from "lucide-react";
 import Link from "next/link.js";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const faqs = [
   {
@@ -55,35 +56,41 @@ const faqs = [
   },
 ];
 
-function FAQItem({ number, title, children, isOpen, onClick }) {
+function FAQItem({ number, title, children, isOpen, onClick, index }) {
   return (
-    <div className="group border-b border-black/10 py-4 lg:py-8">
+    <motion.div
+      initial={{ y: 40 }}
+      whileInView={{ y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: index * 0.05, ease: "easeOut" }}
+      className="group py-4 lg:py-8"
+    >
       <button
         type="button"
         onClick={onClick}
-        className="w-full flex cursor-pointer items-center justify-between gap-8 text-left"
+        className="w-full flex cursor-pointer items-center rounded-2xl justify-between gap-8 text-left"
       >
         <div className="flex items-center gap-8">
-          <span className="text-md text-[#101010]/80">{number}</span>
+          <span className="text-md text-white/80">{number}</span>
 
-          <h3 className="text-lg lg:text-2xl font-semibold text-[#101010]">
+          <h3 className="text-lg lg:text-2xl font-semibold text-white">
             {title}
           </h3>
         </div>
 
         <ChevronDown
-          className={`w-10 h-10 text-[#101010] transition-transform ${
+          className={`w-10 h-10 text-white transition-transform ${
             isOpen ? "rotate-180" : ""
           }`}
         />
       </button>
 
       {isOpen && (
-        <div className="mt-4 pl-12 text-[#101010]/80 text-md leading-relaxed">
+        <div className="mt-4 pl-12 text-white/80 text-md p-4 leading-relaxed">
           {children}
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }
 
@@ -95,36 +102,49 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="w-full flex flex-col gap-16 px-4 lg:px-48 mt-32">
-      <h2 className="text-[#101010] text-2xl lg:text-4xl text-center  w-full">
+    <section className="w-full flex flex-col gap-16 px-4 lg:px-48 mt-32 overflow-hidden">
+      <motion.h2
+        initial={{ y: 30 }}
+        whileInView={{ y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="text-white text-2xl lg:text-4xl font-semibold text-center  w-full"
+      >
         Paling{" "}
-        <span className=" w-fit text-2xl lg:text-5xl text-[#101010] font-semibold text-start col-end-4">
+        <span className=" w-fit text-2xl lg:text-4xl text-gradient2 font-semibold text-start col-end-4">
           Sering Ditanyakan
         </span>
-      </h2>
+      </motion.h2>
 
       <div className="w-full">
-        {faqs.map((faq) => (
+        {faqs.map((faq, index) => (
           <FAQItem
             key={faq.number}
             number={faq.number}
             title={faq.title}
             isOpen={openFAQ === faq.number}
             onClick={() => toggleFAQ(faq.number)}
+            index={index}
           >
             {faq.answer}
           </FAQItem>
         ))}
       </div>
 
-      <div className="flex h-full w-full justify-center items-center">
+      <motion.div
+        initial={{ y: 20 }}
+        whileInView={{ y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="flex h-full w-full justify-center items-center"
+      >
         <Link
           href="/sewa-iphone"
-          className="px-6 py-2 text-white bg-[#0148e4] rounded-full hover:bg-[#0148e4]/90"
+          className=" px-6 py-2 text-primary bg-gradient2 rounded-full hover:bg-gradient2/90"
         >
           Sewa iPhone
         </Link>
-      </div>
+      </motion.div>
     </section>
   );
 }

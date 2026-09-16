@@ -1,21 +1,68 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --primary: #06030f;
+  --primary2: #Af49ff;
+  /* GRADIENT */
+  --gradient-from: #c54fe3;
+  --gradient-via: #c3acbd;
+  --gradient-to: #914ff0;
+
+  /* GRADIENT 2 */
+  --gradient2-from: #e3def2;
+  --gradient2-to: #9780c6;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+    --color-primary2: var(--primary2);
+
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@utility bg-gradient {
+  background: linear-gradient(
+    to right,
+    var(--gradient-from),
+    var(--gradient-via),
+    var(--gradient-to)
+  );
+}
+
+@utility text-gradient {
+  background: linear-gradient(
+    to right,
+    var(--gradient-from),
+    var(--gradient-via),
+    var(--gradient-to)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@utility bg-gradient2 {
+  background: linear-gradient(
+    to right,
+    var(--gradient2-from),
+    var(--gradient2-to)
+  );
+}
+
+@utility text-gradient2 {
+  background: linear-gradient(
+    to right,
+    var(--gradient2-from),
+    var(--gradient2-to)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 body {

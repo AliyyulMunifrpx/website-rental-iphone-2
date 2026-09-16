@@ -32,82 +32,84 @@ export default function Navbar() {
   ];
 
   return (
-    <div className="relative w-full h-16 bg-white lg:bg-white/60 backdrop-blur-md px-4 md:px-8 lg:px-16">
-      <div className="absolute left-4 md:left-8 lg:left-16 top-2 flex gap-2 items-center font-bold text-[#101010] text-2xl">
-        <Image
-          alt={store.name + "logo"}
-          width={50}
-          height={50}
-          src="/logo.webp"
-        ></Image>
-        {/* <Link
+    <div className="w-full h-16 flex items-center px-4 lg:px-40 pt-8">
+      <div className="relative w-full h-16 bg-black/30 lg:bg-black/30 backdrop-blur-md px-4 md:px-8 lg:px-16 border-[0.5px] border-white/30 rounded-full">
+        <div className="absolute left-2  top-2 flex gap-2 items-center font-bold text-[#101010] text-2xl">
+          <Image
+            alt={store.name + "logo"}
+            width={50}
+            height={50}
+            src="/assets/logo wave.webp"
+          ></Image>
+          {/* <Link
           href="/"
           className="font-bold text-[#101010] text-2xl"
           onClick={() => setIsOpen(false)}
         >
           {store.name}{" "}
         </Link> */}
-      </div>
+        </div>
 
-      {/* Desktop menu — posisi & layout persis seperti semula, cuma disembunyikan di bawah lg */}
-      <div className="hidden lg:flex w-full absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 gap-16 justify-end pr-16 xl:justify-center xl:pr-0">
-        {menu.map((item) => {
-          return (
-            <Link
-              key={item.name}
-              href={item.url}
-              className=" tracking-wide text-[#101010] "
-            >
-              {item.name}
-            </Link>
-          );
-        })}
-      </div>
-
-      {/* Hamburger — cuma muncul di bawah lg, gak ganggu layout desktop */}
-      <button
-        type="button"
-        aria-label="Toggle menu"
-        aria-expanded={isOpen}
-        onClick={() => setIsOpen((prev) => !prev)}
-        className="lg:hidden absolute right-4 md:right-8 top-4 w-8 h-8 flex flex-col items-center justify-center gap-[4px]"
-      >
-        <span
-          className={`block w-8 h-[2px] bg-[#101010] transition-transform duration-200 ${
-            isOpen ? "translate-y-[6px] rotate-45" : ""
-          }`}
-        />
-        <span
-          className={`block w-8 h-[2px] bg-[#101010] transition-opacity duration-200 ${
-            isOpen ? "opacity-0" : "opacity-100"
-          }`}
-        />
-        <span
-          className={`block w-8 h-[2px] bg-[#101010] transition-transform duration-200 ${
-            isOpen ? "-translate-y-[6px] -rotate-45" : ""
-          }`}
-        />
-      </button>
-
-      {/* Dropdown mobile/tablet */}
-      <div
-        className={`lg:hidden absolute top-16 left-0 w-full bg-white overflow-hidden transition-[max-height] duration-300 ease-in-out ${
-          isOpen ? "max-h-[400px]" : "max-h-0"
-        }`}
-      >
-        <div className="flex flex-col gap-8 px-4 md:px-8 py-8">
+        {/* Desktop menu — posisi & layout persis seperti semula, cuma disembunyikan di bawah lg */}
+        <div className="hidden lg:flex w-full absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 gap-16 justify-end pr-16 xl:justify-center xl:pr-0">
           {menu.map((item) => {
             return (
               <Link
                 key={item.name}
                 href={item.url}
-                onClick={() => setIsOpen(false)}
-                className="tracking-wide text-[#101010]"
+                className=" tracking-wide text-white font-extralight"
               >
                 {item.name}
               </Link>
             );
           })}
+        </div>
+
+        {/* Hamburger — cuma muncul di bawah lg, gak ganggu layout desktop */}
+        <button
+          type="button"
+          aria-label="Toggle menu"
+          aria-expanded={isOpen}
+          onClick={() => setIsOpen((prev) => !prev)}
+          className="lg:hidden absolute right-4 md:right-8 top-4 w-8 h-8 flex flex-col items-center justify-center gap-[4px]"
+        >
+          <span
+            className={`block w-8 h-[2px] bg-white transition-transform duration-200 ${
+              isOpen ? "translate-y-[6px] rotate-45" : ""
+            }`}
+          />
+          <span
+            className={`block w-8 h-[2px] bg-white transition-opacity duration-200 ${
+              isOpen ? "opacity-0" : "opacity-100"
+            }`}
+          />
+          <span
+            className={`block w-8 h-[2px] bg-white transition-transform duration-200 ${
+              isOpen ? "-translate-y-[6px] -rotate-45" : ""
+            }`}
+          />
+        </button>
+
+        {/* Dropdown mobile/tablet */}
+        <div
+          className={`lg:hidden absolute top-16 left-0 w-full bg-black/30 rounded-2xl backdrop-blur-md overflow-hidden transition-[max-height] duration-300 ease-in-out ${
+            isOpen ? "max-h-[400px]" : "max-h-0"
+          }`}
+        >
+          <div className="flex flex-col gap-8 px-4 md:px-8 py-8">
+            {menu.map((item) => {
+              return (
+                <Link
+                  key={item.name}
+                  href={item.url}
+                  onClick={() => setIsOpen(false)}
+                  className="tracking-wide text-white"
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

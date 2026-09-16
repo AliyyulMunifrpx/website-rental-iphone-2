@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import MainLayout from "../../components/layouts/main-layout.jsx";
 
 import { iPhones } from "../../data/iphones.js";
@@ -54,6 +55,21 @@ function getPriceInfo(product, duration) {
 function getDurationLabel(item) {
   return `${item.duration} jam`;
 }
+
+const revealUp = {
+  hidden: { y: 24 },
+  visible: {
+    y: 0,
+    transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] },
+  },
+};
+
+const revealContainer = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+  },
+};
 
 export default function RentalPage() {
   const [selectedProduct, setSelectedProduct] = useState("");
@@ -300,38 +316,58 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
     <MainLayout>
       <section className="w-full px-4 lg:px-16 mt-24 pb-24">
         <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col w-full items-center gap-4 mb-16">
-            <h1 className="text-[#101010] w-full text-2xl text-start lg:text-4xl font-bold">
+          <motion.div
+            className="flex flex-col w-full items-center gap-4 mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={revealUp}
+          >
+            <h1 className="text-gradient2 w-full text-2xl text-center lg:text-4xl font-bold">
               Formulir Penyewaan
             </h1>
 
-            <p className="w-full text-[#101010]/70 text-start text-md ">
+            <p className="w-full text-white/70 text-start text-md ">
               Pilih unit iPhone yang ingin kamu sewa, tentukan durasi, lengkapi
               data penyewaan, lalu kirim permintaan melalui WhatsApp.
             </p>
-          </div>
+          </motion.div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-16">
             {/* UNIT */}
             <div className="flex flex-col gap-6">
-              <div>
-                <h2 className="text-[#101010] text-2xl font-bold">
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={revealUp}
+              >
+                <h2 className="text-white text-2xl font-bold">
                   Unit Penyewaan
                 </h2>
 
-                <p className="text-[#101010]/60 mt-2">
+                <p className="text-white/60 mt-2">
                   Atur durasi sewa sesuai pilihan paket waktu yang tersedia.
                 </p>
-              </div>
+              </motion.div>
 
               {/* ITEM YANG SUDAH DIPILIH */}
-              <div className="flex flex-col gap-4">
+              <motion.div
+                className="flex flex-col gap-4"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                variants={revealContainer}
+              >
                 {items.length === 0 ? (
-                  <div className="rounded-2xl border border-[#101010]/10 p-8 text-center">
-                    <p className="text-[#101010]/60">
+                  <motion.div
+                    variants={revealUp}
+                    className="rounded-2xl border border-[#101010]/10 p-8 text-center"
+                  >
+                    <p className="text-white/60">
                       Belum ada unit yang dipilih.
                     </p>
-                  </div>
+                  </motion.div>
                 ) : (
                   items.map((item, index) => {
                     const product = findProduct(item.slug);
@@ -341,9 +377,17 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
                     const priceInfo = getPriceInfo(product, item.duration);
 
                     return (
-                      <div
+                      <motion.div
                         key={`${item.slug}-${index}`}
-                        className="rounded-2xl p-5 border border-[#101010]/10 flex flex-col lg:flex-row lg:items-center gap-6"
+                        layout
+                        initial={{ y: 16 }}
+                        animate={{ y: 0 }}
+                        exit={{ y: -16 }}
+                        transition={{
+                          duration: 0.35,
+                          ease: [0.25, 0.1, 0.25, 1],
+                        }}
+                        className="rounded-2xl p-4 border border-[#101010]/10 flex flex-col  border-1 border-white/30 lg:flex-row lg:items-center gap-6"
                       >
                         <div className="flex items-center gap-4 flex-1">
                           <div className="relative w-20 h-20 rounded-xl bg-[#101010]/5 flex items-center justify-center overflow-hidden">
@@ -357,11 +401,11 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
                           </div>
 
                           <div>
-                            <p className="text-[#101010] font-bold">
+                            <p className="text-white font-bold">
                               {product.name}
                             </p>
 
-                            <p className="text-[#101010]/60 text-sm mt-1">
+                            <p className="text-white/60 text-sm mt-1">
                               {priceInfo.label}
                             </p>
                           </div>
@@ -369,7 +413,7 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
 
                         <div className="flex items-center gap-4">
                           {/* TOMBOL - & + */}
-                          <div className="flex items-center gap-3 bg-[#101010]/5 px-3 py-2 rounded-full">
+                          <div className="flex items-center gap-3 bg-gradient2 px-3 py-2 rounded-full">
                             <button
                               type="button"
                               onClick={() => handleDecrement(index)}
@@ -381,7 +425,7 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
                               <span className="text-sm font-semibold text-black">
                                 {item.duration}
                               </span>
-                              <span className="text-xs text-[#101010]/60 ml-1">
+                              <span className="text-sm text-primary ml-2">
                                 jam
                               </span>
                             </div>
@@ -397,24 +441,30 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
                           <button
                             type="button"
                             onClick={() => handleRemoveItem(index)}
-                            className="text-sm text-white hover:bg-red-600 bg-red-500 px-4 py-2 rounded-full cursor-pointer"
+                            className="text-sm text-white hover:bg-red-600 bg-red-500 px-6 py-4 rounded-full cursor-pointer"
                           >
                             Hapus
                           </button>
                         </div>
-                      </div>
+                      </motion.div>
                     );
                   })
                 )}
-              </div>
+              </motion.div>
 
               {/* TAMBAH UNIT */}
-              <div className="rounded-2xl p-6 border border-[#101010]/10 ">
+              <motion.div
+                className="rounded-2xl p-6 border border-[#101010]/10 "
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={revealUp}
+              >
                 <div className="mb-5">
-                  <h3 className="text-black text-lg font-semibold">
+                  <h3 className="text-white text-lg font-semibold">
                     Tambah Unit Penyewaan
                   </h3>
-                  <p className="text-black/60 text-sm mt-1">
+                  <p className="text-white/60 text-sm mt-1">
                     Tambahkan iPhone yang ingin kamu masukkan ke dalam
                     penyewaan.
                   </p>
@@ -422,14 +472,14 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
 
                 <div className="flex flex-col lg:flex-row gap-4 items-end">
                   <div className="flex flex-col gap-2 flex-1 w-full">
-                    <label htmlFor="product" className="text-black text-sm">
+                    <label htmlFor="product" className="text-white text-sm">
                       Unit yang Disewa
                     </label>
                     <select
                       id="product"
                       value={selectedProduct}
                       onChange={(e) => setSelectedProduct(e.target.value)}
-                      className="w-full border border-[#101010]/15 rounded-full px-5 py-3 text-black outline-none"
+                      className="w-full border border-white/30 rounded-full px-5 py-3 text-white outline-none"
                     >
                       <option value="" className="text-black">
                         Pilih iPhone
@@ -449,29 +499,38 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
                   <button
                     type="button"
                     onClick={handleAddProduct}
-                    className="w-full lg:w-auto px-6 py-3 rounded-full bg-[#101010] text-white hover:bg-[#101010]/90 cursor-pointer whitespace-nowrap"
+                    className="w-full lg:w-auto px-6 py-3 rounded-full bg-gradient2 text-primary hover:bg-gradient2/90 cursor-pointer whitespace-nowrap"
                   >
                     Tambah Unit
                   </button>
                 </div>
-              </div>
+              </motion.div>
 
               {/* DATA PENYEWA */}
-              <div className="flex flex-col gap-6 mt-6">
-                <div>
-                  <h2 className="text-[#101010] text-2xl font-bold">
+              <motion.div
+                className="flex flex-col gap-6 mt-6"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                variants={revealContainer}
+              >
+                <motion.div variants={revealUp}>
+                  <h2 className="text-white text-2xl font-bold">
                     Data Penyewa
                   </h2>
 
-                  <p className="text-[#101010]/60 mt-2">
+                  <p className="text-white/60 mt-2">
                     Isi data berikut untuk proses konfirmasi penyewaan.
                   </p>
-                </div>
+                </motion.div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <motion.div
+                  variants={revealUp}
+                  className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+                >
                   {/* NAMA */}
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="name" className="text-sm text-[#101010]">
+                    <label htmlFor="name" className="text-sm text-white">
                       Nama (sesuai KTP)
                     </label>
 
@@ -483,16 +542,13 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
                       onChange={handleFormChange}
                       placeholder="Nama lengkap"
                       required
-                      className="w-full border border-[#101010]/15 rounded-xl px-5 py-3 text-black outline-none focus:border-[#101010]/40"
+                      className="w-full border border-white/30 rounded-xl px-5 py-3 text-white outline-none focus:border-white/30"
                     />
                   </div>
 
                   {/* WHATSAPP */}
                   <div className="flex flex-col gap-2">
-                    <label
-                      htmlFor="whatsapp"
-                      className="text-sm text-[#101010]"
-                    >
+                    <label htmlFor="whatsapp" className="text-sm text-white">
                       No. WhatsApp
                     </label>
 
@@ -504,13 +560,13 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
                       onChange={handleFormChange}
                       placeholder="08xxxxxxxxxx"
                       required
-                      className="w-full border border-[#101010]/15 rounded-xl px-5 py-3 text-black outline-none focus:border-[#101010]/40"
+                      className="w-full border border-white/15 rounded-xl px-5 py-3 text-white outline-none focus:border-white/40"
                     />
                   </div>
 
                   {/* TANGGAL */}
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="date" className="text-sm text-[#101010]">
+                    <label htmlFor="date" className="text-sm text-white">
                       Tanggal Sewa
                     </label>
 
@@ -521,13 +577,13 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
                       value={form.date}
                       onChange={handleFormChange}
                       required
-                      className="w-full border border-[#101010]/15 rounded-xl px-5 py-3 text-black outline-none focus:border-[#101010]/40"
+                      className="w-full border border-white/15 rounded-xl px-5 py-3 text-white outline-none focus:border-white/40"
                     />
                   </div>
 
                   {/* WAKTU */}
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="time" className="text-sm text-[#101010]">
+                    <label htmlFor="time" className="text-sm text-white">
                       Waktu Sewa (Jam Pengambilan atau Mulai)
                     </label>
 
@@ -538,7 +594,7 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
                       value={form.time}
                       onChange={handleFormChange}
                       required
-                      className="w-full border border-[#101010]/15 rounded-xl px-5 py-3 text-black outline-none focus:border-[#101010]/40"
+                      className="w-full border border-white/15 rounded-xl px-5 py-3 text-white outline-none focus:border-white/40"
                     />
                   </div>
 
@@ -546,7 +602,7 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
                   <div className="flex flex-col gap-2 lg:col-span-2">
                     <label
                       htmlFor="pickupMethod"
-                      className="text-sm text-[#101010]"
+                      className="text-sm text-white"
                     >
                       Metode Pengambilan
                     </label>
@@ -556,20 +612,29 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
                       name="pickupMethod"
                       value={form.pickupMethod}
                       onChange={handleFormChange}
-                      className="w-full border border-[#101010]/15 rounded-xl px-5 py-3 text-[#101010] outline-none focus:border-[#101010]/40"
+                      className="w-full border border-white/15 rounded-xl px-5 py-3 text-white outline-none focus:border-white/40"
                     >
                       {/* Opsi ini bisa di-mapping dari store.pickupMethods kalau mau dibikin dinamis */}
-                      <option value="ambil">Ambil di Tempat</option>
-                      <option value="cod">COD</option>
+                      <option value="ambil" className="text-primary">
+                        Ambil di Tempat
+                      </option>
+                      <option value="cod" className="text-primary">
+                        COD
+                      </option>
                     </select>
                   </div>
 
                   {/* LOKASI COD */}
                   {form.pickupMethod === "cod" && (
-                    <div className="flex flex-col gap-2 lg:col-span-2">
+                    <motion.div
+                      initial={{ y: -12 }}
+                      animate={{ y: 0 }}
+                      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                      className="flex flex-col gap-2 lg:col-span-2"
+                    >
                       <label
                         htmlFor="codLocation"
-                        className="text-sm text-[#101010]"
+                        className="text-sm text-white"
                       >
                         Lokasi COD
                       </label>
@@ -582,14 +647,14 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
                         placeholder="Masukkan lokasi COD secara lengkap..."
                         rows={3}
                         required
-                        className="w-full border border-[#101010]/15 rounded-xl px-5 py-3 text-black outline-none resize-none focus:border-[#101010]/40"
+                        className="w-full border border-white/15 rounded-xl px-5 py-3 text-white outline-none resize-none focus:border-white/40"
                       />
-                    </div>
+                    </motion.div>
                   )}
 
                   {/* CATATAN */}
                   <div className="flex flex-col gap-2 lg:col-span-2">
-                    <label htmlFor="note" className="text-sm text-[#101010]">
+                    <label htmlFor="note" className="text-sm text-white">
                       Catatan
                     </label>
 
@@ -600,14 +665,20 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
                       onChange={handleFormChange}
                       placeholder="Tambahkan catatan jika diperlukan..."
                       rows={4}
-                      className="w-full border border-[#101010]/15 rounded-xl px-5 py-3 text-black outline-none resize-none focus:border-[#101010]/40"
+                      className="w-full border border-white/15 rounded-xl px-5 py-3 text-white outline-none resize-none focus:border-white/40"
                     />
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
 
               {/* CHECKBOX SYARAT & KETENTUAN */}
-              <div className="flex flex-col gap-2 pt-4">
+              <motion.div
+                className="flex flex-col gap-2 pt-4"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={revealUp}
+              >
                 <div className="flex items-start gap-3">
                   <input
                     type="checkbox"
@@ -622,14 +693,14 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
                     className={`text-sm select-none ${
                       !hasScrolledToBottom
                         ? "text-gray-400 cursor-not-allowed"
-                        : "text-[#101010] cursor-pointer"
+                        : "text-white cursor-pointer"
                     }`}
                   >
                     Saya telah membaca dan menyetujui{" "}
                     <button
                       type="button"
                       onClick={() => setIsTermsOpen(true)}
-                      className="text-orange-600 underline font-semibold hover:text-orange-700 cursor-pointer inline"
+                      className="text-gradient2 underline font-semibold hover:text-gradient2/50 cursor-pointer inline"
                     >
                       Syarat dan Ketentuan
                     </button>
@@ -637,23 +708,29 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
                 </div>
 
                 {!hasScrolledToBottom && (
-                  <p className="text-xs text-orange-600 italic ml-8">
+                  <p className="text-xs text-white italic ml-8">
                     * Klik dan baca Syarat & Ketentuan hingga akhir untuk dapat
                     mengaktifkan centang.
                   </p>
                 )}
-              </div>
+              </motion.div>
 
               {/* TOTAL + SUBMIT */}
-              <div className="border-t border-[#101010]/10 pt-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+              <motion.div
+                className="border-t border-[#101010]/10 pt-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={revealUp}
+              >
                 <div>
-                  <p className="text-[#101010]/60 text-sm">Estimasi total</p>
+                  <p className="text-white/60 text-sm">Estimasi total</p>
 
-                  <p className="text-[#101010] text-3xl font-bold mt-1">
+                  <p className="text-white text-3xl font-bold mt-1">
                     {displayTotal}
                   </p>
 
-                  <p className="text-[#101010]/50 text-sm mt-2">
+                  <p className="text-white/50 text-sm mt-2">
                     Informasi ketersediaan akan dikonfirmasi melalui WhatsApp.
                   </p>
                 </div>
@@ -661,78 +738,86 @@ Mohon konfirmasi ketersediaan unit dan detail penyewaannya.`;
                 <button
                   type="submit"
                   disabled={!isAgreed}
-                  className="px-8 py-4 rounded-full bg-[#0148e4] hover:bg-[#0148e4]/90 disabled:bg-gray-300 disabled:cursor-not-allowed text-white cursor-pointer font-medium transition-colors"
+                  className="px-8 py-4 rounded-full bg-gradient2 hover:bg-gradient2/90 disabled:bg-gray-300 disabled:cursor-not-allowed text-primary cursor-pointer font-medium transition-colors"
                 >
                   Kirim Form
                 </button>
-              </div>
+              </motion.div>
             </div>
           </form>
         </div>
       </section>
 
       {/* MODAL SYARAT & KETENTUAN */}
-      {isTermsOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-3xl max-w-2xl w-full flex flex-col max-h-[85vh] shadow-2xl overflow-hidden">
-            {/* Modal Header */}
-            <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-[#101010]">
-                Syarat & Ketentuan
-              </h2>
-              <button
-                type="button"
-                onClick={() => setIsTermsOpen(false)}
-                className="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-lg transition-colors cursor-pointer"
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Modal Body dengan listener Scroll */}
-            <div
-              onScroll={handleTermsScroll}
-              className="p-6 overflow-y-auto flex flex-col gap-6 flex-1 text-left"
+      <AnimatePresence>
+        {isTermsOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+            <motion.div
+              initial={{ y: 40, scale: 0.96 }}
+              animate={{ y: 0, scale: 1 }}
+              exit={{ y: 40, scale: 0.96 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              className="bg-white rounded-3xl max-w-2xl w-full flex flex-col max-h-[85vh] shadow-2xl overflow-hidden"
             >
-              {termsData.map((term) => (
-                <div key={term.id} className="space-y-1">
-                  <h3 className="text-lg font-bold text-[#101010]">
-                    {term.title}
-                  </h3>
-                  <p className="text-sm text-[#101010]/80 leading-relaxed">
-                    {term.description}
-                  </p>
-                </div>
-              ))}
+              {/* Modal Header */}
+              <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+                <h2 className="text-2xl font-bold text-black">
+                  Syarat & Ketentuan
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => setIsTermsOpen(false)}
+                  className="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-lg transition-colors cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
 
-              {hasScrolledToBottom && (
-                <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-xl text-center">
-                  <p className="text-xs text-green-700 font-medium">
-                    ✓ Anda telah membaca seluruh syarat dan ketentuan. Sekarang
-                    Anda dapat menyetujui.
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* Modal Footer */}
-            <div className="p-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4 bg-gray-50">
-              <p className="text-xs text-gray-500 text-center sm:text-left">
-                {!hasScrolledToBottom
-                  ? "Gulir sampai paling bawah untuk dapat menutup & menyetujui."
-                  : "Silakan tutup modal dan beri centang pada form."}
-              </p>
-              <button
-                type="button"
-                onClick={() => setIsTermsOpen(false)}
-                className="w-full sm:w-auto px-6 py-2.5 bg-[#101010] hover:bg-[#101010]/90 text-white rounded-full font-medium transition-colors cursor-pointer text-sm"
+              {/* Modal Body dengan listener Scroll */}
+              <div
+                onScroll={handleTermsScroll}
+                className="p-6 overflow-y-auto flex flex-col gap-6 flex-1 text-left"
               >
-                Tutup
-              </button>
-            </div>
+                {termsData.map((term) => (
+                  <div key={term.id} className="space-y-1">
+                    <h3 className="text-lg font-bold text-black">
+                      {term.title}
+                    </h3>
+                    <p className="text-sm text-black/80 leading-relaxed">
+                      {term.description}
+                    </p>
+                  </div>
+                ))}
+
+                {hasScrolledToBottom && (
+                  <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-xl text-center">
+                    <p className="text-xs text-green-700 font-medium">
+                      ✓ Anda telah membaca seluruh syarat dan ketentuan.
+                      Sekarang Anda dapat menyetujui.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Modal Footer */}
+              <div className="p-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4 bg-gray-50">
+                <p className="text-xs text-gray-500 text-center sm:text-left">
+                  {!hasScrolledToBottom
+                    ? "Gulir sampai paling bawah untuk dapat menutup & menyetujui."
+                    : "Silakan tutup modal dan beri centang pada form."}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setIsTermsOpen(false)}
+                  className="w-full sm:w-auto px-6 py-2.5 bg-[#101010] hover:bg-[#101010]/90 text-white rounded-full font-medium transition-colors cursor-pointer text-sm"
+                >
+                  Tutup
+                </button>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </MainLayout>
   );
 }
