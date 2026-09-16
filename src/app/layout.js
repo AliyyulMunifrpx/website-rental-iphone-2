@@ -48,7 +48,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/assets/og.webp",
+        url: "/assets/opengraph.webp",
         width: 1200,
         height: 630,
         alt: `${store.name} - Sewa iPhone di ${store.city}`,
@@ -60,7 +60,7 @@ export const metadata = {
     card: "summary_large_image",
     title: `Sewa iPhone di ${store.city} | ${store.name}`,
     description: `Sewa iPhone di ${store.city} untuk kebutuhan konten, bisnis, liburan, dan lainnya.`,
-    images: ["/assets/og.webp"],
+    images: ["/assets/opengraph.webp"],
   },
 };
 
