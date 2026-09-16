@@ -40,7 +40,7 @@ export default function HeroSection() {
           initial={{ y: 30 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-          className=" w-fit text-2xl lg:text-6xl text-gradient py-2 font-semibold text-center col-end-4"
+          className=" w-fit text-4xl lg:text-6xl text-gradient py-2 font-semibold text-center col-end-4"
         >
           Rent, Ready, Go!
         </motion.p>

@@ -2,6 +2,7 @@
 
 import { Star } from "lucide-react";
 import { motion } from "framer-motion";
+import { store } from "../../data/store.js";
 
 function Rating({ rating = 5 }) {
   return (
@@ -62,19 +63,19 @@ export default function TestimonialSection() {
   const testimonials = [
     {
       name: "Raka",
-      role: "Pelanggan iRent",
+      role: `Pelanggan ${store.name}`,
       rating: 5,
       text: "Prosesnya cepat, unitnya bersih dan sesuai yang dijanjikan.",
     },
     {
       name: "Nadia",
-      role: "Pelanggan iRent",
+      role: `Pelanggan ${store.name}`,
       rating: 4.5,
       text: "Sangat membantu untuk kebutuhan konten. Tinggal pilih unit dan langsung chat.",
     },
     {
       name: "Fajar",
-      role: "Pelanggan iRent",
+      role: `Pelanggan ${store.name}`,
       rating: 5,
       text: "Harganya jelas dari awal dan proses sewanya nggak ribet.",
     },
